@@ -76,6 +76,30 @@ body {
   transform: none;
 }
 
+/* Theme Select Dropdown */
+.theme-select {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-border);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.theme-select:hover, .theme-select:focus {
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-select option {
+  background: var(--bg-color);
+  color: var(--text-primary);
+}
+
 /* Scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
@@ -196,6 +220,57 @@ body {
 
 .preview-content h1 { font-size: 2em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
 .preview-content h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+
+/* 
+==================================================
+  PDF THEME OVERRIDES 
+  These apply specifically to the PDF generation wrapper
+==================================================
+*/
+
+/* 1. Default Theme (Standard black, standard margins, matches web preview) */
+.theme-default {
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+/* 2. GitHub Style */
+.theme-github {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: #24292f;
+  background-color: #ffffff;
+}
+.theme-github h1, .theme-github h2 { border-bottom: 1px solid #d0d7de; }
+.theme-github a { color: #0969da; }
+.theme-github code { background-color: rgba(175, 184, 193, 0.2); }
+.theme-github pre { background-color: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; }
+
+/* 3. Notion Style */
+.theme-notion {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: #37352f;
+}
+.theme-notion h1, .theme-notion h2, .theme-notion h3 { font-weight: 700; border-bottom: none; }
+.theme-notion h1 { font-size: 2.5em; margin-bottom: 1em; }
+.theme-notion blockquote { border-left: 3px solid currentColor; background: rgba(0,0,0,0.02); padding: 0.5em 1em; }
+.theme-notion pre { background: #f7f6f3; padding: 1em; border-radius: 3px; }
+
+/* 4. Academic Style */
+.theme-academic {
+  font-family: "Times New Roman", Times, serif;
+  color: #000;
+  line-height: 2; /* Double spacing often required */
+  text-align: justify;
+}
+.theme-academic h1 { text-align: center; font-size: 1.8em; border-bottom: none; text-transform: uppercase;}
+.theme-academic h2 { text-align: center; font-size: 1.4em; border-bottom: none; }
+.theme-academic h3 { text-align: left; font-size: 1.2em; font-style: italic; }
+.theme-academic p { text-indent: 1.5em; margin-bottom: 0;}
+.theme-academic p:first-of-type { text-indent: 0; }
+
+/* 
+==================================================
+*/
 
 
 

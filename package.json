@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "highlight.js": "^11.11.1",
     "html2pdf.js": "^0.14.0",
     "lucide-react": "^0.577.0",
     "marked": "^17.0.4",
+    "marked-highlight": "^2.2.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

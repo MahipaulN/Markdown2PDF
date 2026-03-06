@@ -1,7 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { marked } from 'marked';
+import { markedHighlight } from "marked-highlight";
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark.css'; // Premium dark code theme
 import html2pdf from 'html2pdf.js';
 import { Download, FileText, Code2, Loader2, PenTool } from 'lucide-react';
+
+// Configure Marked to use Highlight.js
+marked.use(markedHighlight({
+  langPrefix: 'hljs language-',
+  highlight(code, lang) {
+    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+    return hljs.highlight(code, { language }).value;
+  }
+}));
 
 export default function App() {
   const [markdown, setMarkdown] = useState(`# Welcome to Markdown2PDF 🚀
@@ -31,6 +43,13 @@ function greetings() {
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [parsedHtml, setParsedHtml] = useState('');
+  const [pdfTheme, setPdfTheme] = useState('theme-default');
+  
+  // PDF Config State
+  const [margin, setMargin] = useState(15);
+  const [format, setFormat] = useState('a4');
+  const [orientation, setOrientation] = useState('portrait');
+
   const printRef = useRef(null);
 
   // Update parsed HTML when markdown changes
@@ -46,11 +65,11 @@ function greetings() {
     
     // PDF configuration options
     const options = {
-      margin:       15,
+      margin:       Number(margin),
       filename:     'markdown2pdf-document.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      jsPDF:        { unit: 'mm', format: format, orientation: orientation }
     };
 
     // Generate and download
@@ -72,9 +91,54 @@ function greetings() {
           <FileText size={28} color="var(--accent-color)" />
           <span>Markdown2PDF</span>
         </div>
-        <button 
-          className="btn btn-primary"
-          onClick={handleDownloadPdf}
+        
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+          <select 
+            className="theme-select"
+            value={pdfTheme} 
+            onChange={(e) => setPdfTheme(e.target.value)}
+            title="PDF Theme"
+          >
+            <option value="theme-default">Default Theme</option>
+            <option value="theme-github">GitHub Style</option>
+            <option value="theme-notion">Notion Style</option>
+            <option value="theme-academic">Academic Paper</option>
+          </select>
+          
+          <select 
+            className="theme-select"
+            value={margin} 
+            onChange={(e) => setMargin(e.target.value)}
+            title="PDF Margin"
+          >
+            <option value={15}>Normal Margin</option>
+            <option value={5}>Narrow Margin</option>
+            <option value={25}>Wide Margin</option>
+          </select>
+          
+          <select 
+            className="theme-select"
+            value={format} 
+            onChange={(e) => setFormat(e.target.value)}
+            title="Paper Size"
+          >
+            <option value="a4">A4 Size</option>
+            <option value="letter">US Letter</option>
+          </select>
+          
+          <select 
+            className="theme-select"
+            value={orientation} 
+            onChange={(e) => setOrientation(e.target.value)}
+            title="PDF Orientation"
+          >
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+
+          <button 
+            className="btn btn-primary"
+            onClick={handleDownloadPdf}
           disabled={isGenerating}
         >
           {isGenerating ? (
@@ -83,7 +147,8 @@ function greetings() {
             <Download size={18} />
           )}
           {isGenerating ? 'Generating PDF...' : 'Download PDF'}
-        </button>
+          </button>
+        </div>
       </header>
 
       <main className="app-main">
@@ -119,13 +184,15 @@ function greetings() {
       <div className="sr-only">
         <div 
           ref={printRef} 
-          className="preview-content"
+          className={`preview-content ${pdfTheme}`}
           style={{ 
             color: '#000', 
             background: '#fff', 
             fontFamily: 'Arial, sans-serif',
             padding: '20px',
-            width: '800px', // Fixed width to ensure stable layout for A4 size canvas
+            width: orientation === 'landscape' 
+              ? (format === 'a4' ? '1122px' : '1056px') 
+              : (format === 'a4' ? '794px' : '816px'), 
             maxWidth: 'none'
           }}
           dangerouslySetInnerHTML={{ __html: parsedHtml }}
