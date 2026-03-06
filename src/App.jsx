@@ -3,7 +3,8 @@ import { marked } from 'marked';
 import { markedHighlight } from "marked-highlight";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css'; // Premium dark code theme
-import html2pdf from 'html2pdf.js';
+import { Document, Page, pdf, StyleSheet, Font } from '@react-pdf/renderer';
+import Html from 'react-pdf-html';
 import { useDropzone } from 'react-dropzone';
 import { Download, FileText, Code2, Loader2, PenTool, Sun, Moon, Maximize, Minimize, UploadCloud } from 'lucide-react';
 
@@ -16,25 +17,72 @@ marked.use(markedHighlight({
   }
 }));
 
-// Theme style definitions — inlined so html2canvas can read them without a CSS file
+// Theme style definitions formatted for react-pdf StyleSheet
 const THEME_STYLES = {
   'theme-default': {
-    fontFamily: 'Arial, sans-serif',
+    fontFamily: 'Helvetica',
     color: '#000000',
-    background: '#ffffff',
-    lineHeight: '1.6',
+    backgroundColor: '#ffffff',
+    lineHeight: 1.6,
   },
   'theme-github': {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+    fontFamily: 'Helvetica',
     color: '#24292f',
-    background: '#ffffff',
-    lineHeight: '1.6',
+    backgroundColor: '#ffffff',
+    lineHeight: 1.6,
   },
   'theme-notion': {
-    fontFamily: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+    fontFamily: 'Helvetica',
     color: '#37352f',
-    background: '#ffffff',
-    lineHeight: '1.7',
+    backgroundColor: '#ffffff',
+    lineHeight: 1.7,
+  },
+};
+// Define base styles for the vector PDF
+const pdfStyles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+  },
+});
+
+// React-PDF HTML mapping styles (Fixes tables natively)
+const pdfHtmlStyles = {
+  table: {
+    width: '100%',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  th: {
+    backgroundColor: '#f3f4f6',
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    fontWeight: 'bold',
+  },
+  td: {
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  p: {
+    marginBottom: 10,
+    fontSize: 12,
+    lineHeight: 1.5,
+  },
+  code: {
+    backgroundColor: '#f6f8fa',
+    padding: 2,
+    borderRadius: 3,
+    fontFamily: 'Courier',
+    fontSize: 10,
+  },
+  pre: {
+    backgroundColor: '#f6f8fa',
+    padding: 10,
+    borderRadius: 4,
+    marginBottom: 10,
   },
 };
 
@@ -69,16 +117,8 @@ function greetings() {
   const [pdfTheme, setPdfTheme] = useState('theme-default');
   const fontSize = '12px'; // Fixed to small text
   
-  // PDF Config State (Hardcoded for A4 Print)
-  const margin = 15;
-  const format = 'a4';
-  const orientation = 'portrait';
-
-  // UI State
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isFocusMode, setIsFocusMode] = useState(false);
-
-  const printRef = useRef(null);
 
   // Apply dark mode class to body 
   useEffect(() => {
@@ -117,68 +157,36 @@ function greetings() {
     multiple: false
   });
 
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     setIsGenerating(true);
     
-    const container = printRef.current;
-    const wrapper = container.parentElement;
-    
-    const resetWrapper = () => {
-      wrapper.style.position = '';
-      wrapper.style.left = '';
-      wrapper.style.top = '';
-      wrapper.style.width = '';
-      wrapper.style.height = '';
-      wrapper.style.overflow = '';
-      wrapper.style.clip = '';
-      wrapper.style.clipPath = '';
-      wrapper.style.whiteSpace = '';
-      wrapper.style.margin = '';
-      wrapper.style.padding = '';
-    };
-    
-    // Temporarily make the hidden container visible off-screen so html2canvas
-    // can measure and render it at its full 595pt width (A4).
-    wrapper.style.position = 'absolute';
-    wrapper.style.left = '-9999px';
-    wrapper.style.top = '0';
-    wrapper.style.width = '595px';
-    wrapper.style.height = 'auto';
-    wrapper.style.overflow = 'visible';
-    wrapper.style.clip = 'auto';
-    wrapper.style.clipPath = 'none';
-    wrapper.style.whiteSpace = 'normal';
-    wrapper.style.margin = '0';
-    wrapper.style.padding = '0';
-    
-    // Margins: [top, right, bottom, left] in pt
-    const margins = [15, 10, 20, 10];
+    try {
+      // Create the React-PDF Document component using the latest parsed HTML
+      const MyDocument = (
+        <Document>
+          <Page size="A4" style={{ ...pdfStyles.page, ...THEME_STYLES[pdfTheme] }}>
+            <Html stylesheet={pdfHtmlStyles}>{parsedHtml}</Html>
+          </Page>
+        </Document>
+      );
 
-    const options = {
-      margin:       margins,
-      filename:     'markdown2pdf-document.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, letterRendering: true, width: 595, windowWidth: 595 },
-      jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: 'css', avoid: ['tr', 'pre', 'p', 'h1', 'h2', 'h3', 'li', 'blockquote'] }
-    };
-
-    // Use toPdf() pipeline so we can access the jsPDF doc to draw per-page decorations
-    html2pdf()
-      .set(options)
-      .from(container)
-      .toPdf()
-      .get('pdf')
-      .then((pdf) => {
-        pdf.save('markdown2pdf-document.pdf');
-        resetWrapper();
-        setIsGenerating(false);
-      })
-      .catch((err) => {
-        console.error("PDF generation failed:", err);
-        resetWrapper();
-        setIsGenerating(false);
-      });
+      // Generate the PDF blob in memory
+      const blob = await pdf(MyDocument).toBlob();
+      
+      // Trigger the browser download
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'markdown2pdf-document.pdf';
+      link.click();
+      
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Vector PDF Generation failed:", error);
+      alert("Failed to generate PDF. Check console for details.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -284,20 +292,6 @@ function greetings() {
           />
         </div>
       </main>
-
-      {/* Hidden container exclusively formatted for html2pdf.js generation */}
-      <div className="sr-only" aria-hidden="true">
-        <div 
-          ref={printRef} 
-          className="preview-content pdf-render-target"
-          style={{ 
-            // Inline all theme + font styles so html2canvas can read them
-            ...THEME_STYLES[pdfTheme],
-            fontSize,
-          }}
-          dangerouslySetInnerHTML={{ __html: parsedHtml }}
-        />
-      </div>
     </div>
   );
 }
