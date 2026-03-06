@@ -36,13 +36,6 @@ const THEME_STYLES = {
     background: '#ffffff',
     lineHeight: '1.7',
   },
-  'theme-academic': {
-    fontFamily: '"Times New Roman", Times, serif',
-    color: '#000000',
-    background: '#ffffff',
-    lineHeight: '2',
-    textAlign: 'justify',
-  },
 };
 
 export default function App() {
@@ -74,7 +67,7 @@ function greetings() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [parsedHtml, setParsedHtml] = useState('');
   const [pdfTheme, setPdfTheme] = useState('theme-default');
-  const [fontSize, setFontSize] = useState('14px');
+  const fontSize = '12px'; // Fixed to small text
   
   // PDF Config State (Hardcoded for A4 Print)
   const margin = 15;
@@ -210,19 +203,6 @@ function greetings() {
             <option value="theme-default">Default Theme</option>
             <option value="theme-github">GitHub Style</option>
             <option value="theme-notion">Notion Style</option>
-            <option value="theme-academic">Academic Paper</option>
-          </select>
-
-          <select 
-            className="theme-select"
-            value={fontSize} 
-            onChange={(e) => setFontSize(e.target.value)}
-            title="Font Size"
-          >
-            <option value="12px">Small Text</option>
-            <option value="14px">Normal Text</option>
-            <option value="16px">Large Text</option>
-            <option value="18px">Extra Large</option>
           </select>
 
           <button 
