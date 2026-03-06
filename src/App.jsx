@@ -95,18 +95,29 @@ const pdfHtmlStyles = {
     textAlign: 'left',
   },
   code: {
-    backgroundColor: '#f6f8fa',
-    padding: 2,
-    borderRadius: 3,
     fontFamily: 'Courier',
     fontSize: 9.5, // Matches table size
   },
-  pre: {
-    backgroundColor: '#f6f8fa',
+  '.pdf-pre': {
+    backgroundColor: '#0d1117', // GitHub Dark Background
+    color: '#c9d1d9',           // GitHub Dark Text
     padding: 10,
     borderRadius: 4,
     marginBottom: 10,
   },
+  // highlight.js github-dark tokens
+  '.hljs-keyword': { color: '#ff7b72' },
+  '.hljs-function': { color: '#d2a8ff' },
+  '.hljs-class': { color: '#d2a8ff' },
+  '.hljs-title': { color: '#d2a8ff' },
+  '.hljs-number': { color: '#79c0ff' },
+  '.hljs-string': { color: '#a5d6ff' },
+  '.hljs-comment': { color: '#8b949e' },
+  '.hljs-built_in': { color: '#ffa657' },
+  '.hljs-variable': { color: '#79c0ff' },
+  '.hljs-attr': { color: '#79c0ff' },
+  '.hljs-params': { color: '#c9d1d9' },
+  '.hljs-type': { color: '#ff7b72' },
 };
 
 export default function App() {
@@ -182,6 +193,12 @@ function greetings() {
     setIsGenerating(true);
     
     try {
+      // Hack to fix react-pdf-html ignoring tags inside <pre> blocks
+      // We convert <pre> to a generic <div> so the parser evaluates the inner syntax highlighting spans natively
+      const pdfReadyHtml = parsedHtml
+        .replace(/<pre><code/g, '<div class="pdf-pre"><code')
+        .replace(/<\/code><\/pre>/g, '</code></div>');
+
       // Create the React-PDF Document component using the latest parsed HTML
       const MyDocument = (
         <Document>
@@ -195,7 +212,7 @@ function greetings() {
                 h4: (props) => <Text {...props} wrap={false} />
               }}
             >
-              {parsedHtml}
+              {pdfReadyHtml}
             </Html>
           </Page>
         </Document>
