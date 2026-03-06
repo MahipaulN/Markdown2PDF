@@ -237,6 +237,7 @@ function greetings() {
             onChange={(e) => setMarkdown(e.target.value)}
             placeholder="Start typing your markdown here, or drag and drop a .md file..."
             spellCheck="false"
+            style={{ paddingBottom: '25vh' }}
             onClick={(e) => e.stopPropagation()} // Prevent clicking textarea from opening file dialog
           />
         </div>
@@ -248,7 +249,7 @@ function greetings() {
             Live Preview
           </div>
           <div 
-            className="preview-content live-preview"
+            className={`preview-content live-preview ${pdfTheme}`}
             dangerouslySetInnerHTML={{ __html: parsedHtml }}
           />
         </div>
