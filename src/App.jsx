@@ -98,6 +98,13 @@ const pdfHtmlStyles = {
     fontFamily: 'Courier',
     fontSize: 9.5, // Matches table size
   },
+  img: {
+    maxWidth: '100%',
+    marginTop: 12,
+    marginBottom: 12,
+    // react-pdf forces objectFit="contain" natively,
+    // so maxWidth acts as a responsive boundary constraint.
+  },
   '.pdf-pre': {
     backgroundColor: '#0d1117', // GitHub Dark Background
     color: '#c9d1d9',           // GitHub Dark Text
