@@ -60,6 +60,21 @@ const pdfHtmlStyles = {
     fontSize: 11,
     lineHeight: 1.5,
   },
+  ul: {
+    marginBottom: 10,
+    fontSize: 11,
+    lineHeight: 1.5,
+  },
+  ol: {
+    marginBottom: 10,
+    fontSize: 11,
+    lineHeight: 1.5,
+  },
+  li: {
+    marginBottom: 4,
+    fontSize: 11,
+    lineHeight: 1.5,
+  },
   h1: { 
     fontSize: 20, 
     marginBottom: 12 
