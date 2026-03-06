@@ -194,10 +194,24 @@ function greetings() {
     
     try {
       // Hack to fix react-pdf-html ignoring tags inside <pre> blocks
-      // We convert <pre> to a generic <div> so the parser evaluates the inner syntax highlighting spans natively
-      const pdfReadyHtml = parsedHtml
-        .replace(/<pre><code/g, '<div class="pdf-pre"><code')
-        .replace(/<\/code><\/pre>/g, '</code></div>');
+      // We convert <pre> to a generic <div> so the parser evaluates the inner syntax highlighting spans natively.
+      // However, typical HTML collapses whitespace. To preserve the exact layout inside the PDF,
+      // we manually convert all literal \n to <br/> and literal spaces to non-breaking spaces (\u00A0),
+      // executing this ONLY on text nodes and stepping over the <span> tags injected by highlight.js.
+      const pdfReadyHtml = parsedHtml.replace(
+        /<pre><code([^>]*)>([\s\S]*?)<\/code><\/pre>/g,
+        (match, attrs, content) => {
+          let formattedContent = content
+            .replace(/\n/g, '<br/>')
+            .split(/(<[^>]+>)/g)
+            .map(part => {
+              if (part.startsWith('<')) return part;
+              return part.replace(/ /g, '\u00A0'); // Literal spaces to non-breaking spaces
+            })
+            .join('');
+          return `<div class="pdf-pre"><code${attrs}>${formattedContent}</code></div>`;
+        }
+      );
 
       // Create the React-PDF Document component using the latest parsed HTML
       const MyDocument = (
