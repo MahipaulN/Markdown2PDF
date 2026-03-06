@@ -46,10 +46,10 @@ function greetings() {
   const [parsedHtml, setParsedHtml] = useState('');
   const [pdfTheme, setPdfTheme] = useState('theme-default');
   
-  // PDF Config State
-  const [margin, setMargin] = useState(15);
-  const [format, setFormat] = useState('a4');
-  const [orientation, setOrientation] = useState('portrait');
+  // PDF Config State (Hardcoded for A4 Print)
+  const margin = 15;
+  const format = 'a4';
+  const orientation = 'portrait';
 
   // UI State
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -140,37 +140,6 @@ function greetings() {
             <option value="theme-github">GitHub Style</option>
             <option value="theme-notion">Notion Style</option>
             <option value="theme-academic">Academic Paper</option>
-          </select>
-          
-          <select 
-            className="theme-select"
-            value={margin} 
-            onChange={(e) => setMargin(e.target.value)}
-            title="PDF Margin"
-          >
-            <option value={15}>Normal Margin</option>
-            <option value={5}>Narrow Margin</option>
-            <option value={25}>Wide Margin</option>
-          </select>
-          
-          <select 
-            className="theme-select"
-            value={format} 
-            onChange={(e) => setFormat(e.target.value)}
-            title="Paper Size"
-          >
-            <option value="a4">A4 Size</option>
-            <option value="letter">US Letter</option>
-          </select>
-          
-          <select 
-            className="theme-select"
-            value={orientation} 
-            onChange={(e) => setOrientation(e.target.value)}
-            title="PDF Orientation"
-          >
-            <option value="portrait">Portrait</option>
-            <option value="landscape">Landscape</option>
           </select>
 
           <button 
@@ -265,10 +234,8 @@ function greetings() {
             background: '#fff', 
             fontFamily: 'Arial, sans-serif',
             padding: '20px',
-            width: orientation === 'landscape' 
-              ? (format === 'a4' ? '1122px' : '1056px') 
-              : (format === 'a4' ? '794px' : '816px'), 
-            maxWidth: 'none'
+            width: '800px', // Strict width matches A4 aspect closely, forcing tables to wrap
+            maxWidth: '800px'
           }}
           dangerouslySetInnerHTML={{ __html: parsedHtml }}
         />
