@@ -49,55 +49,62 @@ const pdfStyles = StyleSheet.create({
 
 // React-PDF HTML mapping styles (Fixes tables natively)
 const pdfHtmlStyles = {
-  h1: {
-    fontSize: 20,
-    marginBottom: 12,
-  },
-  h2: {
-    fontSize: 16,
-    marginTop: 18,
-    marginBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
-    paddingBottom: 4,
-  },
-  h3: {
-    fontSize: 13,
-    marginTop: 12,
-    marginBottom: 6,
-  },
-  table: {
-    width: '100%',
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    fontSize: 9.5, // Tables should be smaller than body text
-  },
-  th: {
-    backgroundColor: '#f3f4f6',
-    padding: 6,
-    borderWidth: 1,
-    borderColor: '#dddddd',
-    fontWeight: 'bold',
-    textAlign: 'left',
-  },
-  td: {
-    padding: 6,
-    borderWidth: 1,
-    borderColor: '#dddddd',
-    textAlign: 'left',
+  body: {
+    fontFamily: 'Helvetica',
+    fontSize: 11, // 11pt body text
+    lineHeight: 1.5,
+    color: '#333333',
   },
   p: {
     marginBottom: 10,
     fontSize: 11,
     lineHeight: 1.5,
   },
+  h1: { 
+    fontSize: 20, 
+    marginBottom: 12 
+  },
+  h2: { 
+    fontSize: 16, 
+    marginTop: 18, 
+    marginBottom: 8, 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#cccccc', 
+    paddingBottom: 4 
+  },
+  h3: { 
+    fontSize: 13, 
+    marginTop: 12, 
+    marginBottom: 6, 
+    fontWeight: 'bold' 
+  },
+  table: {
+    width: '100%',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    fontSize: 9.5, // Slightly smaller for tables to fix squishing
+  },
+  th: {
+    backgroundColor: '#f3f4f6',
+    padding: 6,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
+  td: {
+    padding: 6,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    textAlign: 'left',
+  },
   code: {
     backgroundColor: '#f6f8fa',
     padding: 2,
     borderRadius: 3,
     fontFamily: 'Courier',
-    fontSize: 9.5,
+    fontSize: 9.5, // Matches table size
   },
   pre: {
     backgroundColor: '#f6f8fa',
