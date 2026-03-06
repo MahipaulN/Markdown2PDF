@@ -77,21 +77,21 @@ const pdfHtmlStyles = {
     width: '100%',
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#d0d0d0',
     fontSize: 9.5, // Slightly smaller for tables to fix squishing
   },
   th: {
-    backgroundColor: '#f3f4f6',
-    padding: 6,
+    backgroundColor: '#f3f3f3',
+    padding: '8px 10px',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#d0d0d0',
     fontWeight: 'bold',
     textAlign: 'left',
   },
   td: {
-    padding: 6,
+    padding: '8px 10px',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#d0d0d0',
     textAlign: 'left',
   },
   code: {
@@ -165,8 +165,12 @@ function greetings() {
 
   // Update parsed HTML when markdown changes
   useEffect(() => {
-    // Config marked if needed (e.g. gfm, breaks)
-    setParsedHtml(marked.parse(markdown));
+    // Hack: marked requires a blank line before a table to parse it as a table instead of a paragraph.
+    // Users often paste tables without blank lines. 
+    // This regex looks for a pipe `|` line following a non-blank, non-pipe line and injects a newline.
+    const preProcessedMarkdown = markdown.replace(/([^|\n])\s*\n(\s*\|)/g, '$1\n\n$2');
+    
+    setParsedHtml(marked.parse(preProcessedMarkdown));
   }, [markdown]);
 
   // File Drop Handler
