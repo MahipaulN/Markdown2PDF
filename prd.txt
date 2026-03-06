@@ -1,0 +1,181 @@
+====================================================
+  PRODUCT REQUIREMENTS DOCUMENT (PRD)
+  Markdown2PDF — Client-Side Markdown to PDF Converter
+====================================================
+
+Version:  1.0
+Date:     March 2026
+Author:   Engineering Team
+
+
+----------------------------------------------------
+1. OVERVIEW
+----------------------------------------------------
+
+Markdown2PDF is a 100% client-side web application that allows users to write or paste Markdown text and instantly convert it into a high-quality, downloadable PDF document.
+
+There is zero server involvement — all processing happens in the user's browser, ensuring complete privacy. The app is built with ReactJS, styled with Vanilla CSS, and uses the following core libraries:
+
+  - marked         : Markdown to HTML parser
+  - html2pdf.js    : HTML to PDF exporter (html2canvas + jsPDF)
+  - highlight.js   : Syntax highlighting for code blocks
+  - react-dropzone : Drag-and-drop file upload
+
+
+----------------------------------------------------
+2. GOALS
+----------------------------------------------------
+
+  - Let users write Markdown and see a live HTML preview side-by-side
+  - Export a clean, well-formatted PDF at the click of a button
+  - Support multiple PDF styling themes (font, colors, spacing)
+  - Support font size control before PDF export
+  - Work entirely client-side with no backend or cloud cost
+  - Be visually premium with a glassmorphism dark UI
+
+
+----------------------------------------------------
+3. TARGET USERS
+----------------------------------------------------
+
+  - Developers writing technical documents, PRDs, or README files
+  - Students writing academic reports
+  - Product managers drafting specs
+  - Anyone who needs Quick PDF exports from Markdown text
+
+
+----------------------------------------------------
+4. FEATURES
+----------------------------------------------------
+
+4.1 LIVE SPLIT-SCREEN EDITOR
+
+  - Left pane: Markdown textarea with monospace font
+  - Right pane: Real-time HTML preview rendered by `marked`
+  - Both panes scroll independently
+  - Bottom padding in editor prevents last lines from touching the edge
+
+
+4.2 PDF DOWNLOAD
+
+  - Single "Download PDF" button in the header
+  - PDF is generated using html2pdf.js
+  - Format: A4, Portrait, 10pt margin
+  - Tables, code blocks, images are all included
+  - Page-break logic avoids splitting rows, paragraphs, and headings mid-page
+
+
+4.3 PDF THEMES (Visual Presets)
+
+  - Dropdown to choose from 4 themes:
+      a) Default  — Arial, black text, clean layout
+      b) GitHub   — System sans-serif, GitHub colors (gray tones, blue links)
+      c) Notion   — Clean sans-serif, Notion-like spacing and blockquotes
+      d) Academic — Times New Roman, double line-spacing, justified, uppercase headings
+  - Theme is applied via inlined JS styles (not external CSS)
+    so html2canvas can capture them correctly
+
+
+4.4 FONT SIZE CONTROL
+
+  - Dropdown to select text size for the exported PDF:
+      a) Small      — 12px
+      b) Normal     — 14px (default)
+      c) Large      — 16px
+      d) Extra Large — 18px
+  - Font size is applied to the live preview AND the PDF export container
+
+
+4.5 SYNTAX HIGHLIGHTING
+
+  - Code fenced blocks (e.g. ```javascript) are highlighted using highlight.js
+  - Theme: GitHub Dark
+  - Works in both live preview and PDF
+
+
+4.6 DRAG-AND-DROP FILE UPLOAD
+
+  - Users can drag a .md file onto the Editor pane
+  - File content is read with FileReader API and loaded into the editor
+  - Visual highlight on drag-over
+
+
+4.7 UI DARK MODE / LIGHT MODE
+
+  - Toggle button (Sun / Moon icon) in the header
+  - Switches the entire UI between dark and light themes
+  - CSS variables are swapped on the <body> element
+  - Default: Dark mode
+
+
+4.8 FOCUS MODE
+
+  - "Maximize" icon in the header enters Focus Mode
+  - Header is hidden; editor and preview expand to full viewport height
+  - Floating "Exit Focus Mode" pill button in the center top
+  - Good for distraction-free writing
+
+
+----------------------------------------------------
+5. DESIGN REQUIREMENTS
+----------------------------------------------------
+
+  - Glassmorphism card UI (backdrop blur, semi-transparent surfaces)
+  - Dark mode by default (#0d1117 background, GitHub-style palette)
+  - Inter font for UI, monospace for the editor
+  - Smooth hover transitions and micro-animations
+  - Responsive: stacks vertically on mobile (<768px)
+  - Premium "wow factor" at first glance
+
+
+----------------------------------------------------
+6. TABLE RENDERING IN PDF (KNOWN COMPLEXITY)
+----------------------------------------------------
+
+  - html2canvas renders from a DOM snapshot, not from CSS files
+  - The PDF container is temporarily un-hidden off-screen (-9999px)
+    before html2canvas captures it, allowing it to measure the real width
+  - All table styles use table-layout: fixed + word-break: break-word
+  - page-break-inside: avoid is applied to <tr>, <p>, <h1-4>, <li>, <pre>
+  - Container width is enforced at 595px (A4 at 72dpi)
+
+
+----------------------------------------------------
+7. OUT OF SCOPE (V1)
+----------------------------------------------------
+
+  - Server-side PDF generation
+  - User authentication or document storage
+  - Custom margin/orientation controls (removed for cleaner UX)
+  - Dark mode PDFs (PDFs are always white-background)
+  - Multi-file support
+
+
+----------------------------------------------------
+8. TECH STACK
+----------------------------------------------------
+
+  Frontend Framework: React 18 + Vite
+  Styling:            Vanilla CSS (no Tailwind)
+  PDF Engine:         html2pdf.js (html2canvas + jsPDF)
+  Markdown Parser:    marked + marked-highlight
+  Syntax Highlight:   highlight.js (github-dark theme)
+  File Upload:        react-dropzone
+  Icons:              lucide-react
+  Version Control:    Git / GitHub (MahipaulN/Markdown2PDF)
+
+
+----------------------------------------------------
+9. FUTURE CONSIDERATIONS
+----------------------------------------------------
+
+  - Custom watermark text on PDF pages
+  - Table of Contents auto-generation
+  - Export to DOCX or HTML
+  - Cloud save (Notion, Google Drive integration)
+  - AI-assisted Markdown generation from prompts
+
+
+====================================================
+END OF PRD
+====================================================

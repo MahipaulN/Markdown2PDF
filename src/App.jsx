@@ -16,6 +16,35 @@ marked.use(markedHighlight({
   }
 }));
 
+// Theme style definitions — inlined so html2canvas can read them without a CSS file
+const THEME_STYLES = {
+  'theme-default': {
+    fontFamily: 'Arial, sans-serif',
+    color: '#000000',
+    background: '#ffffff',
+    lineHeight: '1.6',
+  },
+  'theme-github': {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+    color: '#24292f',
+    background: '#ffffff',
+    lineHeight: '1.6',
+  },
+  'theme-notion': {
+    fontFamily: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
+    color: '#37352f',
+    background: '#ffffff',
+    lineHeight: '1.7',
+  },
+  'theme-academic': {
+    fontFamily: '"Times New Roman", Times, serif',
+    color: '#000000',
+    background: '#ffffff',
+    lineHeight: '2',
+    textAlign: 'justify',
+  },
+};
+
 export default function App() {
   const [markdown, setMarkdown] = useState(`# Welcome to Markdown2PDF 🚀
 
@@ -283,8 +312,12 @@ function greetings() {
       <div className="sr-only" aria-hidden="true">
         <div 
           ref={printRef} 
-          className={`preview-content pdf-render-target ${pdfTheme}`}
-          style={{ fontSize }}
+          className="preview-content pdf-render-target"
+          style={{ 
+            // Inline all theme + font styles so html2canvas can read them
+            ...THEME_STYLES[pdfTheme],
+            fontSize,
+          }}
           dangerouslySetInnerHTML={{ __html: parsedHtml }}
         />
       </div>
