@@ -156,29 +156,157 @@ const pdfHtmlStyles = {
 };
 
 export default function App() {
-  const [markdown, setMarkdown] = useState(`# Welcome to Markdown2PDF 🚀
+  const [markdown, setMarkdown] = useState(`# Markdown Rendering Stress Test
 
-Write your markdown here, and see the live rendered preview on the right. 
+This document checks whether a Markdown renderer and PDF exporter behave correctly under multiple formatting conditions.
 
-## Features
-- **Real-time Preview**: Type on the left, see results instantly.
-- **High-Quality PDF**: We use \`html2pdf.js\` for crisp, professional rendering.
-- **Client-Side**: 100% private. No data sent to servers!
+---
 
-### Code Example
+# 1 Headings
+
+## Heading Level 2
+### Heading Level 3
+#### Heading Level 4
+
+Headings should maintain correct font size hierarchy.
+
+---
+
+# 2 Text Formatting
+
+Normal text.
+
+**Bold text**
+
+*Italic text*
+
+~~Strikethrough text~~
+
+> This is a blockquote.
+> It should appear visually separated from normal content.
+
+Inline code example: \`const version = "1.0.0";\`
+
+---
+
+# 3 Links
+
+External link
+[OpenAI](https://openai.com)
+
+Documentation link
+[Markdown Guide](https://www.markdownguide.org)
+
+---
+
+# 4 Images
+
+Small image:
+
+![Small Placeholder](https://via.placeholder.com/200x120)
+
+Medium image:
+
+![Medium Placeholder](https://via.placeholder.com/500x250)
+
+Images should maintain aspect ratio and not overflow page width.
+
+---
+
+# 5 Lists
+
+## Unordered List
+
+- Item 1
+- Item 2
+- Item 3
+  - Nested Item A
+  - Nested Item B
+    - Deep Nested Item
+
+## Ordered List
+
+1. Step one
+2. Step two
+3. Step three
+
+---
+
+# 6 Table Test
+
+| Name | Role | Experience | Location |
+|-----|------|-----------|----------|
+| Alice | Frontend Developer | 3 Years | London |
+| Bob | Backend Developer | 5 Years | New York |
+| Charlie | Full Stack Developer | 4 Years | Berlin |
+
+---
+
+# 7 Wide Table Stress Test
+
+| Feature | Description | Expected Result |
+|--------|-------------|----------------|
+| Markdown Parsing | The renderer should correctly interpret all Markdown syntax | Works without formatting issues |
+| Image Rendering | Images should scale automatically | Images fit within page width |
+| Table Layout | Tables should maintain alignment and borders | Columns align correctly |
+| Code Blocks | Code blocks should use monospace fonts | Code formatting preserved |
+
+---
+
+# 8 Code Block Rendering
+
+Example JavaScript code:
+
 \`\`\`javascript
-function greetings() {
-  console.log("Hello, world!");
+function orderFood(item) {
+  const order = {
+    item: item,
+    status: "pending",
+    time: new Date()
+  };
+
+  console.log("Order created:", order);
 }
+
+orderFood("Sandwich");
 \`\`\`
 
-### Tables
-| Syntax      | Description |
-| ----------- | ----------- |
-| Header      | Title       |
-| Paragraph   | Text        |
+Example Python code:
 
-> "The best way to predict the future is to invent it."
+\`\`\`python
+def process_queue(queue):
+    for user in queue:
+        print("Allow ordering for:", user)
+
+users = ["user1", "user2", "user3"]
+process_queue(users)
+\`\`\`
+
+---
+
+# 9 Mixed Content
+
+Here is **bold text**, *italic text*, a \`code snippet\`, and a [link](https://example.com) in the same sentence.
+
+---
+
+# 10 Horizontal Rule Test
+
+Below this line should appear a horizontal divider.
+
+---
+
+Content continues after the divider.
+
+---
+
+# 11 Long Paragraph Wrapping
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae sapien vel augue tempor tempor. Curabitur vehicula lectus in lorem dignissim, sed tempor erat elementum. Donec posuere, velit vel egestas elementum, mauris nisl vestibulum sapien, id tincidunt risus lorem id mi. This paragraph is intentionally long to verify proper text wrapping in both the browser renderer and exported PDF layout.
+
+---
+
+End of Markdown rendering test.
 `);
   
   const [isGenerating, setIsGenerating] = useState(false);
