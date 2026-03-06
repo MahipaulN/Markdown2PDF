@@ -123,8 +123,22 @@ function greetings() {
     const container = printRef.current;
     const wrapper = container.parentElement;
     
+    const resetWrapper = () => {
+      wrapper.style.position = '';
+      wrapper.style.left = '';
+      wrapper.style.top = '';
+      wrapper.style.width = '';
+      wrapper.style.height = '';
+      wrapper.style.overflow = '';
+      wrapper.style.clip = '';
+      wrapper.style.clipPath = '';
+      wrapper.style.whiteSpace = '';
+      wrapper.style.margin = '';
+      wrapper.style.padding = '';
+    };
+    
     // Temporarily make the hidden container visible off-screen so html2canvas
-    // can measure and render it at its full 595px width (A4 at 72dpi).
+    // can measure and render it at its full 595pt width (A4).
     wrapper.style.position = 'absolute';
     wrapper.style.left = '-9999px';
     wrapper.style.top = '0';
@@ -137,9 +151,11 @@ function greetings() {
     wrapper.style.margin = '0';
     wrapper.style.padding = '0';
     
-    // PDF configuration options
+    // Margins: [top, right, bottom, left] in pt
+    const margins = [15, 10, 20, 10];
+
     const options = {
-      margin:       10,
+      margin:       margins,
       filename:     'markdown2pdf-document.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, letterRendering: true, width: 595, windowWidth: 595 },
@@ -147,39 +163,33 @@ function greetings() {
       pagebreak:    { mode: 'css', avoid: ['tr', 'pre', 'p', 'h1', 'h2', 'h3', 'li', 'blockquote'] }
     };
 
-    // Generate and download
+    // Use toPdf() pipeline so we can access the jsPDF doc to draw per-page decorations
     html2pdf()
       .set(options)
       .from(container)
-      .save()
-      .then(() => {
-        // Re-hide the container after PDF is generated
-        wrapper.style.position = '';
-        wrapper.style.left = '';
-        wrapper.style.top = '';
-        wrapper.style.width = '';
-        wrapper.style.height = '';
-        wrapper.style.overflow = '';
-        wrapper.style.clip = '';
-        wrapper.style.clipPath = '';
-        wrapper.style.whiteSpace = '';
-        wrapper.style.margin = '';
-        wrapper.style.padding = '';
+      .toPdf()
+      .get('pdf')
+      .then((pdf) => {
+        const totalPages = pdf.internal.getNumberOfPages();
+        const pageWidth  = pdf.internal.pageSize.getWidth();   // 595 pt
+        const pageHeight = pdf.internal.pageSize.getHeight();  // 842 pt
+
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+          // Draw a thin bottom border line
+          pdf.setDrawColor(180, 180, 180);   // light gray
+          pdf.setLineWidth(0.5);
+          const lineY = pageHeight - margins[2] + 4; // just inside bottom margin
+          pdf.line(margins[3], lineY, pageWidth - margins[1], lineY);
+        }
+
+        pdf.save('markdown2pdf-document.pdf');
+        resetWrapper();
         setIsGenerating(false);
       })
       .catch((err) => {
         console.error("PDF generation failed:", err);
-        wrapper.style.position = '';
-        wrapper.style.left = '';
-        wrapper.style.top = '';
-        wrapper.style.width = '';
-        wrapper.style.height = '';
-        wrapper.style.overflow = '';
-        wrapper.style.clip = '';
-        wrapper.style.clipPath = '';
-        wrapper.style.whiteSpace = '';
-        wrapper.style.margin = '';
-        wrapper.style.padding = '';
+        resetWrapper();
         setIsGenerating(false);
       });
   };

@@ -574,8 +574,10 @@ body {
   margin-left: 16px !important;
 }
 
-.pdf-render-target h4 + p,
-.pdf-render-target h4 + ul,
-.pdf-render-target h4 + ol {
-  margin-left: 28px !important;
+.pdf-render-target h1,
+.pdf-render-target h2,
+.pdf-render-target h3,
+.pdf-render-target h4 {
+  page-break-after: avoid !important;
+  break-after: avoid !important;
 }
