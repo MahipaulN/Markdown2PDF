@@ -137,7 +137,6 @@ function greetings() {
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [parsedHtml, setParsedHtml] = useState('');
-  const fontSize = '12px'; // Fixed to small text
   
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isFocusMode, setIsFocusMode] = useState(false);
@@ -307,8 +306,7 @@ function greetings() {
             Live Preview
           </div>
           <div 
-            className={`preview-content live-preview ${pdfTheme}`}
-            style={{ fontSize }}
+            className="preview-content live-preview"
             dangerouslySetInnerHTML={{ __html: parsedHtml }}
           />
         </div>
