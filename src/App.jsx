@@ -17,27 +17,7 @@ marked.use(markedHighlight({
   }
 }));
 
-// Theme style definitions formatted for react-pdf StyleSheet
-const THEME_STYLES = {
-  'theme-default': {
-    fontFamily: 'Helvetica',
-    color: '#000000',
-    backgroundColor: '#ffffff',
-    lineHeight: 1.5,
-  },
-  'theme-github': {
-    fontFamily: 'Helvetica',
-    color: '#333333',
-    backgroundColor: '#ffffff',
-    lineHeight: 1.5,
-  },
-  'theme-notion': {
-    fontFamily: 'Helvetica',
-    color: '#333333',
-    backgroundColor: '#ffffff',
-    lineHeight: 1.5,
-  },
-};
+
 // Define base styles for the vector PDF
 const pdfStyles = StyleSheet.create({
   page: {
@@ -157,7 +137,6 @@ function greetings() {
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [parsedHtml, setParsedHtml] = useState('');
-  const [pdfTheme, setPdfTheme] = useState('theme-default');
   const fontSize = '12px'; // Fixed to small text
   
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -207,7 +186,7 @@ function greetings() {
       // Create the React-PDF Document component using the latest parsed HTML
       const MyDocument = (
         <Document>
-          <Page size="A4" style={{ ...pdfStyles.page, ...THEME_STYLES[pdfTheme] }}>
+          <Page size="A4" style={pdfStyles.page}>
             <Html 
               stylesheet={pdfHtmlStyles}
               components={{
@@ -252,17 +231,6 @@ function greetings() {
           </div>
         
         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-          <select 
-            className="theme-select"
-            value={pdfTheme} 
-            onChange={(e) => setPdfTheme(e.target.value)}
-            title="PDF Theme"
-          >
-            <option value="theme-default">Default Theme</option>
-            <option value="theme-github">GitHub Style</option>
-            <option value="theme-notion">Notion Style</option>
-          </select>
-
           <button 
             className="btn btn-primary"
             onClick={handleDownloadPdf}
