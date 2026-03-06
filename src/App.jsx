@@ -170,19 +170,6 @@ function greetings() {
       .toPdf()
       .get('pdf')
       .then((pdf) => {
-        const totalPages = pdf.internal.getNumberOfPages();
-        const pageWidth  = pdf.internal.pageSize.getWidth();   // 595 pt
-        const pageHeight = pdf.internal.pageSize.getHeight();  // 842 pt
-
-        for (let i = 1; i <= totalPages; i++) {
-          pdf.setPage(i);
-          // Draw a thin bottom border line
-          pdf.setDrawColor(180, 180, 180);   // light gray
-          pdf.setLineWidth(0.5);
-          const lineY = pageHeight - margins[2] + 4; // just inside bottom margin
-          pdf.line(margins[3], lineY, pageWidth - margins[1], lineY);
-        }
-
         pdf.save('markdown2pdf-document.pdf');
         resetWrapper();
         setIsGenerating(false);

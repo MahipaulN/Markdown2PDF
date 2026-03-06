@@ -549,34 +549,13 @@ body {
   margin-bottom: 0.5em !important;
 }
 
-/* Subsection indentation — h3, h4 are inset with a barely-visible left accent */
+/* Subsection headings — no indentation, clean alignment */
 .pdf-render-target h3 {
-  margin-left: 16px !important;
-  padding-left: 10px !important;
-  border-left: 1px solid #dddddd !important; /* near-invisible subtle line */
   margin-top: 0.5em !important;
   margin-bottom: 0.1em !important;
 }
 
 .pdf-render-target h4 {
-  margin-left: 28px !important;
-  padding-left: 10px !important;
-  border-left: 1px solid #e0e0e0 !important; /* near-invisible */
   margin-top: 0.4em !important;
   margin-bottom: 0.1em !important;
-}
-
-/* Indent paragraphs and lists that follow an h3 or h4 */
-.pdf-render-target h3 + p,
-.pdf-render-target h3 + ul,
-.pdf-render-target h3 + ol {
-  margin-left: 16px !important;
-}
-
-.pdf-render-target h1,
-.pdf-render-target h2,
-.pdf-render-target h3,
-.pdf-render-target h4 {
-  page-break-after: avoid !important;
-  break-after: avoid !important;
 }
