@@ -428,11 +428,15 @@ body {
   margin-top: 0;
   margin-bottom: 16px;
   width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
 }
 
 .preview-content table th, .preview-content table td {
   padding: 6px 13px;
   border: 1px solid #dfe2e5;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .preview-content table tr {
