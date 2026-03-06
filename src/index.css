@@ -549,22 +549,21 @@ body {
   margin-bottom: 0.5em !important;
 }
 
-/* Subsection indentation — h3, h4 are inset with a left accent bar */
+/* Subsection indentation — h3, h4 are inset with a barely-visible left accent */
 .pdf-render-target h3 {
   margin-left: 16px !important;
   padding-left: 10px !important;
-  border-left: 3px solid #58a6ff !important;
-  margin-top: 0.8em !important;
-  margin-bottom: 0.4em !important;
+  border-left: 1px solid #dddddd !important; /* near-invisible subtle line */
+  margin-top: 0.5em !important;
+  margin-bottom: 0.1em !important;
 }
 
 .pdf-render-target h4 {
   margin-left: 28px !important;
   padding-left: 10px !important;
-  border-left: 2px solid #8b949e !important;
-  margin-top: 0.6em !important;
-  margin-bottom: 0.3em !important;
-  font-style: italic !important;
+  border-left: 1px solid #e0e0e0 !important; /* near-invisible */
+  margin-top: 0.4em !important;
+  margin-bottom: 0.1em !important;
 }
 
 /* Indent paragraphs and lists that follow an h3 or h4 */
