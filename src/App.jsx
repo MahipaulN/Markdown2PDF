@@ -23,19 +23,19 @@ const THEME_STYLES = {
     fontFamily: 'Helvetica',
     color: '#000000',
     backgroundColor: '#ffffff',
-    lineHeight: 1.6,
+    lineHeight: 1.5,
   },
   'theme-github': {
     fontFamily: 'Helvetica',
-    color: '#24292f',
+    color: '#333333',
     backgroundColor: '#ffffff',
-    lineHeight: 1.6,
+    lineHeight: 1.5,
   },
   'theme-notion': {
     fontFamily: 'Helvetica',
-    color: '#37352f',
+    color: '#333333',
     backgroundColor: '#ffffff',
-    lineHeight: 1.7,
+    lineHeight: 1.5,
   },
 };
 // Define base styles for the vector PDF
@@ -43,32 +43,53 @@ const pdfStyles = StyleSheet.create({
   page: {
     padding: 40,
     fontFamily: 'Helvetica',
+    fontSize: 11, // Standard body size for print
   },
 });
 
 // React-PDF HTML mapping styles (Fixes tables natively)
 const pdfHtmlStyles = {
+  h1: {
+    fontSize: 20,
+    marginBottom: 12,
+  },
+  h2: {
+    fontSize: 16,
+    marginTop: 18,
+    marginBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+    paddingBottom: 4,
+  },
+  h3: {
+    fontSize: 13,
+    marginTop: 12,
+    marginBottom: 6,
+  },
   table: {
     width: '100%',
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#e5e7eb',
+    fontSize: 9.5, // Tables should be smaller than body text
   },
   th: {
     backgroundColor: '#f3f4f6',
-    padding: 5,
+    padding: 6,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#dddddd',
     fontWeight: 'bold',
+    textAlign: 'left',
   },
   td: {
-    padding: 5,
+    padding: 6,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#dddddd',
+    textAlign: 'left',
   },
   p: {
     marginBottom: 10,
-    fontSize: 12,
+    fontSize: 11,
     lineHeight: 1.5,
   },
   code: {
@@ -76,7 +97,7 @@ const pdfHtmlStyles = {
     padding: 2,
     borderRadius: 3,
     fontFamily: 'Courier',
-    fontSize: 10,
+    fontSize: 9.5,
   },
   pre: {
     backgroundColor: '#f6f8fa',
