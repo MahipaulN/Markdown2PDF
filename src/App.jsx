@@ -104,8 +104,9 @@ function greetings() {
       margin:       Number(margin),
       filename:     'markdown2pdf-document.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-      jsPDF:        { unit: 'mm', format: format, orientation: orientation }
+      html2canvas:  { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
+      jsPDF:        { unit: 'mm', format: format, orientation: orientation },
+      pagebreak:    { mode: 'css', avoid: ['tr', 'td', 'th', 'h1', 'h2', 'h3', 'h4', 'p', 'li', 'pre', 'img'] }
     };
 
     // Generate and download
