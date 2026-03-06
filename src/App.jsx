@@ -45,6 +45,7 @@ function greetings() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [parsedHtml, setParsedHtml] = useState('');
   const [pdfTheme, setPdfTheme] = useState('theme-default');
+  const [fontSize, setFontSize] = useState('14px');
   
   // PDF Config State (Hardcoded for A4 Print)
   const margin = 15;
@@ -121,7 +122,7 @@ function greetings() {
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, letterRendering: true, width: 595, windowWidth: 595 },
       jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: 'css' }
+      pagebreak:    { mode: 'css', avoid: ['tr', 'pre', 'p', 'h1', 'h2', 'h3', 'li', 'blockquote'] }
     };
 
     // Generate and download
@@ -181,6 +182,18 @@ function greetings() {
             <option value="theme-github">GitHub Style</option>
             <option value="theme-notion">Notion Style</option>
             <option value="theme-academic">Academic Paper</option>
+          </select>
+
+          <select 
+            className="theme-select"
+            value={fontSize} 
+            onChange={(e) => setFontSize(e.target.value)}
+            title="Font Size"
+          >
+            <option value="12px">Small Text</option>
+            <option value="14px">Normal Text</option>
+            <option value="16px">Large Text</option>
+            <option value="18px">Extra Large</option>
           </select>
 
           <button 
@@ -260,6 +273,7 @@ function greetings() {
           </div>
           <div 
             className={`preview-content live-preview ${pdfTheme}`}
+            style={{ fontSize }}
             dangerouslySetInnerHTML={{ __html: parsedHtml }}
           />
         </div>
@@ -270,6 +284,7 @@ function greetings() {
         <div 
           ref={printRef} 
           className={`preview-content pdf-render-target ${pdfTheme}`}
+          style={{ fontSize }}
           dangerouslySetInnerHTML={{ __html: parsedHtml }}
         />
       </div>

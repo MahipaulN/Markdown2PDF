@@ -517,39 +517,19 @@ body {
   overflow-x: hidden !important;
 }
 
-/* Prevent text from being sliced in half across page boundaries */
+/* Force PDF engine to avoid slicing these elements in half vertically */
 .pdf-render-target tr,
+.pdf-render-target td,
 .pdf-render-target th,
-.pdf-render-target td {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-}
-
+.pdf-render-target p,
+.pdf-render-target pre,
 .pdf-render-target h1,
 .pdf-render-target h2,
 .pdf-render-target h3,
 .pdf-render-target h4,
-.pdf-render-target h5,
-.pdf-render-target h6 {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-  page-break-after: avoid !important;
-  break-after: avoid !important;
-}
-
-.pdf-render-target p,
+.pdf-render-target ul,
 .pdf-render-target li,
-.pdf-render-target blockquote,
-.pdf-render-target pre,
-.pdf-render-target img {
+.pdf-render-target blockquote {
   page-break-inside: avoid !important;
   break-inside: avoid !important;
-}
-
-.pdf-render-target table {
-  page-break-inside: auto !important; /* Allow table itself to span pages */
-}
-
-.pdf-render-target thead {
-  display: table-header-group; /* Repeat header on each page */
 }
