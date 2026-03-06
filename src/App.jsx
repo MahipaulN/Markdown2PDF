@@ -97,26 +97,66 @@ function greetings() {
   const handleDownloadPdf = () => {
     setIsGenerating(true);
     
-    const element = printRef.current;
+    const container = printRef.current;
+    const wrapper = container.parentElement;
+    
+    // Temporarily make the hidden container visible off-screen so html2canvas
+    // can measure and render it at its full 595px width (A4 at 72dpi).
+    wrapper.style.position = 'absolute';
+    wrapper.style.left = '-9999px';
+    wrapper.style.top = '0';
+    wrapper.style.width = '595px';
+    wrapper.style.height = 'auto';
+    wrapper.style.overflow = 'visible';
+    wrapper.style.clip = 'auto';
+    wrapper.style.clipPath = 'none';
+    wrapper.style.whiteSpace = 'normal';
+    wrapper.style.margin = '0';
+    wrapper.style.padding = '0';
     
     // PDF configuration options
     const options = {
-      margin:       Number(margin),
+      margin:       10,
       filename:     'markdown2pdf-document.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
-      jsPDF:        { unit: 'mm', format: format, orientation: orientation },
-      pagebreak:    { mode: 'css', avoid: ['tr', 'td', 'th', 'h1', 'h2', 'h3', 'h4', 'p', 'li', 'pre', 'img'] }
+      html2canvas:  { scale: 2, useCORS: true, letterRendering: true, width: 595, windowWidth: 595 },
+      jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'], avoid: ['tr', 'thead', 'tfoot'] }
     };
 
     // Generate and download
     html2pdf()
       .set(options)
-      .from(element)
+      .from(container)
       .save()
-      .then(() => setIsGenerating(false))
+      .then(() => {
+        // Re-hide the container after PDF is generated
+        wrapper.style.position = '';
+        wrapper.style.left = '';
+        wrapper.style.top = '';
+        wrapper.style.width = '';
+        wrapper.style.height = '';
+        wrapper.style.overflow = '';
+        wrapper.style.clip = '';
+        wrapper.style.clipPath = '';
+        wrapper.style.whiteSpace = '';
+        wrapper.style.margin = '';
+        wrapper.style.padding = '';
+        setIsGenerating(false);
+      })
       .catch((err) => {
         console.error("PDF generation failed:", err);
+        wrapper.style.position = '';
+        wrapper.style.left = '';
+        wrapper.style.top = '';
+        wrapper.style.width = '';
+        wrapper.style.height = '';
+        wrapper.style.overflow = '';
+        wrapper.style.clip = '';
+        wrapper.style.clipPath = '';
+        wrapper.style.whiteSpace = '';
+        wrapper.style.margin = '';
+        wrapper.style.padding = '';
         setIsGenerating(false);
       });
   };
@@ -226,18 +266,10 @@ function greetings() {
       </main>
 
       {/* Hidden container exclusively formatted for html2pdf.js generation */}
-      <div className="sr-only">
+      <div className="sr-only" aria-hidden="true">
         <div 
           ref={printRef} 
-          className={`preview-content ${pdfTheme}`}
-          style={{ 
-            color: '#000', 
-            background: '#fff', 
-            fontFamily: 'Arial, sans-serif',
-            padding: '20px',
-            width: '800px', // Strict width matches A4 aspect closely, forcing tables to wrap
-            maxWidth: '800px'
-          }}
+          className={`preview-content pdf-render-target ${pdfTheme}`}
           dangerouslySetInnerHTML={{ __html: parsedHtml }}
         />
       </div>

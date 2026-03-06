@@ -476,3 +476,43 @@ body {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* PDF Render Target — this is the container html2canvas actually captures.
+   Its parent (.sr-only) gets temporarily un-hidden by JS before PDF generation. */
+.pdf-render-target {
+  width: 595px !important;   /* A4 width at 72 DPI */
+  max-width: 595px !important;
+  box-sizing: border-box !important;
+  padding: 20px !important;
+  overflow-x: hidden !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  color: #000;
+  background: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 12pt;
+}
+
+/* Force tables inside PDF render target to respect bounds */
+.pdf-render-target table {
+  width: 100% !important;
+  max-width: 100% !important;
+  table-layout: fixed !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  font-size: 9pt;
+}
+
+.pdf-render-target table th,
+.pdf-render-target table td {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  padding: 4px 6px !important;
+  max-width: 100% !important;
+}
+
+.pdf-render-target pre {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-x: hidden !important;
+}
