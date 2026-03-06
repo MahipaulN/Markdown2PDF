@@ -44,11 +44,13 @@ const pdfHtmlStyles = {
     marginBottom: 10,
     fontSize: 11,
     lineHeight: 1.5,
+    paddingLeft: 15,
   },
   ol: {
     marginBottom: 10,
     fontSize: 11,
     lineHeight: 1.5,
+    paddingLeft: 15,
   },
   li: {
     marginBottom: 4,
@@ -56,22 +58,48 @@ const pdfHtmlStyles = {
     lineHeight: 1.5,
   },
   h1: { 
-    fontSize: 20, 
-    marginBottom: 12 
+    fontSize: 24, 
+    marginBottom: 12,
+    fontWeight: 'bold',
   },
   h2: { 
-    fontSize: 16, 
+    fontSize: 20, 
     marginTop: 18, 
     marginBottom: 8, 
     borderBottomWidth: 1, 
     borderBottomColor: '#cccccc', 
-    paddingBottom: 4 
+    paddingBottom: 4,
+    fontWeight: 'bold',
   },
   h3: { 
-    fontSize: 13, 
+    fontSize: 16, 
     marginTop: 12, 
     marginBottom: 6, 
     fontWeight: 'bold' 
+  },
+  h4: { 
+    fontSize: 14, 
+    marginTop: 10, 
+    marginBottom: 4, 
+    fontWeight: 'bold' 
+  },
+  blockquote: {
+    borderLeftWidth: 4,
+    borderLeftColor: '#d0d0d0',
+    paddingLeft: 12,
+    color: '#555555',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  hr: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  a: {
+    color: '#2563eb',
+    textDecoration: 'underline',
   },
   table: {
     width: '100%',
