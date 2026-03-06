@@ -533,3 +533,49 @@ body {
   page-break-inside: avoid !important;
   break-inside: avoid !important;
 }
+
+/* Section borders — H1 and H2 get a visible bottom border to act as section dividers */
+.pdf-render-target h1 {
+  border-bottom: 2px solid #24292f !important;
+  padding-bottom: 0.3em !important;
+  margin-top: 1.2em !important;
+  margin-bottom: 0.6em !important;
+}
+
+.pdf-render-target h2 {
+  border-bottom: 1px solid #d0d7de !important;
+  padding-bottom: 0.25em !important;
+  margin-top: 1em !important;
+  margin-bottom: 0.5em !important;
+}
+
+/* Subsection indentation — h3, h4 are inset with a left accent bar */
+.pdf-render-target h3 {
+  margin-left: 16px !important;
+  padding-left: 10px !important;
+  border-left: 3px solid #58a6ff !important;
+  margin-top: 0.8em !important;
+  margin-bottom: 0.4em !important;
+}
+
+.pdf-render-target h4 {
+  margin-left: 28px !important;
+  padding-left: 10px !important;
+  border-left: 2px solid #8b949e !important;
+  margin-top: 0.6em !important;
+  margin-bottom: 0.3em !important;
+  font-style: italic !important;
+}
+
+/* Indent paragraphs and lists that follow an h3 or h4 */
+.pdf-render-target h3 + p,
+.pdf-render-target h3 + ul,
+.pdf-render-target h3 + ol {
+  margin-left: 16px !important;
+}
+
+.pdf-render-target h4 + p,
+.pdf-render-target h4 + ul,
+.pdf-render-target h4 + ol {
+  margin-left: 28px !important;
+}
