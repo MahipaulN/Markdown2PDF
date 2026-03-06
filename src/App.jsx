@@ -4,7 +4,7 @@ import { markedHighlight } from "marked-highlight";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css'; // Premium dark code theme
 import html2pdf from 'html2pdf.js';
-import { Download, FileText, Code2, Loader2, PenTool } from 'lucide-react';
+import { Download, FileText, Code2, Loader2, PenTool, Sun, Moon, Maximize, Minimize } from 'lucide-react';
 
 // Configure Marked to use Highlight.js
 marked.use(markedHighlight({
@@ -50,7 +50,22 @@ function greetings() {
   const [format, setFormat] = useState('a4');
   const [orientation, setOrientation] = useState('portrait');
 
+  // UI State
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isFocusMode, setIsFocusMode] = useState(false);
+
   const printRef = useRef(null);
+
+  // Apply dark mode class to body 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-theme');
+      document.body.classList.remove('light-theme');
+    } else {
+      document.body.classList.add('light-theme');
+      document.body.classList.remove('dark-theme');
+    }
+  }, [isDarkMode]);
 
   // Update parsed HTML when markdown changes
   useEffect(() => {
@@ -85,12 +100,13 @@ function greetings() {
   };
 
   return (
-    <>
-      <header className="app-header glass">
-        <div className="app-title">
-          <FileText size={28} color="var(--accent-color)" />
-          <span>Markdown2PDF</span>
-        </div>
+    <div className={`app-wrapper ${isFocusMode ? 'focus-mode' : ''}`}>
+      {!isFocusMode && (
+        <header className="app-header glass">
+          <div className="app-title">
+            <FileText size={28} color="var(--accent-color)" />
+            <span>Markdown2PDF</span>
+          </div>
         
         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
           <select 
@@ -139,19 +155,48 @@ function greetings() {
           <button 
             className="btn btn-primary"
             onClick={handleDownloadPdf}
-          disabled={isGenerating}
-        >
-          {isGenerating ? (
-            <Loader2 className="pulse" size={18} />
-          ) : (
-            <Download size={18} />
-          )}
-          {isGenerating ? 'Generating PDF...' : 'Download PDF'}
+            disabled={isGenerating}
+          >
+            {isGenerating ? (
+              <Loader2 className="pulse" size={18} />
+            ) : (
+              <Download size={18} />
+            )}
+            {isGenerating ? 'Generating PDF...' : 'Download PDF'}
+          </button>
+          
+          <div style={{ width: '1px', height: '30px', background: 'var(--surface-border)', margin: '0 5px' }}></div>
+          
+          <button 
+            className="icon-btn" 
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <button 
+            className="icon-btn" 
+            onClick={() => setIsFocusMode(true)}
+            title="Enter Focus Mode"
+          >
+            <Maximize size={20} />
           </button>
         </div>
       </header>
+      )}
 
-      <main className="app-main">
+      {isFocusMode && (
+        <button 
+          className="exit-focus-btn glass"
+          onClick={() => setIsFocusMode(false)}
+          title="Exit Focus Mode"
+        >
+          <Minimize size={18} style={{ marginRight: '6px' }}/> Exit Focus Mode
+        </button>
+      )}
+
+      <main className={`app-main ${isFocusMode ? 'focus-expanded' : ''}`}>
         {/* Editor Pane */}
         <div className="pane glass">
           <div className="pane-header">
@@ -198,6 +243,6 @@ function greetings() {
           dangerouslySetInnerHTML={{ __html: parsedHtml }}
         />
       </div>
-    </>
+    </div>
   );
 }

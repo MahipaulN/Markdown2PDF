@@ -1,12 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Light Theme defaults (can be overridden) */
+body.light-theme {
+  --bg-color: #f6f8fa;
+  --bg-gradient: linear-gradient(135deg, #f6f8fa 0%, #e1e4e8 100%);
+  --surface-color: rgba(255, 255, 255, 0.8);
+  --surface-border: rgba(0, 0, 0, 0.1);
+  --text-primary: #24292f;
+  --text-secondary: #57606a;
+}
 
-:root {
+/* Default Dark Theme variables */
+body.dark-theme {
   --bg-color: #0d1117;
   --bg-gradient: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
   --surface-color: rgba(33, 38, 45, 0.6);
   --surface-border: rgba(255, 255, 255, 0.1);
   --text-primary: #f0f6fc;
   --text-secondary: #8b949e;
+}
+
+:root {
   --accent-color: #58a6ff;
   --accent-hover: #1f6feb;
   --danger-color: #f85149;
@@ -74,6 +87,25 @@ body {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+}
+
+/* Icon Buttons */
+.icon-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
 }
 
 /* Theme Select Dropdown */
@@ -144,12 +176,52 @@ body {
 }
 
 /* Main Layout */
+.app-wrapper {
+  position: relative;
+  min-height: 100vh;
+}
+
+.app-wrapper.focus-mode {
+  padding-top: 50px; /* Space for the exit button */
+}
+
 .app-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   padding: 1.5rem;
   height: calc(100vh - 85px); /* Header height approx */
+  transition: all 0.3s ease;
+}
+
+.app-main.focus-expanded {
+  height: calc(100vh - 80px); /* Taller when header is hidden */
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.exit-focus-btn {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  background: var(--surface-color);
+  color: var(--text-primary);
+  border: 1px solid var(--surface-border);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.exit-focus-btn:hover {
+  background: var(--bg-color);
+  border-color: var(--accent-color);
 }
 
 @media (max-width: 768px) {
