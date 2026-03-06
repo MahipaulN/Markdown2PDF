@@ -3,7 +3,7 @@ import { marked } from 'marked';
 import { markedHighlight } from "marked-highlight";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css'; // Premium dark code theme
-import { Document, Page, pdf, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, pdf, StyleSheet, Font, Text, View } from '@react-pdf/renderer';
 import Html from 'react-pdf-html';
 import { useDropzone } from 'react-dropzone';
 import { Download, FileText, Code2, Loader2, PenTool, Sun, Moon, Maximize, Minimize, UploadCloud } from 'lucide-react';
@@ -208,7 +208,17 @@ function greetings() {
       const MyDocument = (
         <Document>
           <Page size="A4" style={{ ...pdfStyles.page, ...THEME_STYLES[pdfTheme] }}>
-            <Html stylesheet={pdfHtmlStyles}>{parsedHtml}</Html>
+            <Html 
+              stylesheet={pdfHtmlStyles}
+              components={{
+                h1: (props) => <Text {...props} wrap={false} />,
+                h2: (props) => <Text {...props} wrap={false} />,
+                h3: (props) => <Text {...props} wrap={false} />,
+                h4: (props) => <Text {...props} wrap={false} />
+              }}
+            >
+              {parsedHtml}
+            </Html>
           </Page>
         </Document>
       );
