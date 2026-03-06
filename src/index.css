@@ -267,6 +267,31 @@ body {
   line-height: 1.6;
 }
 
+/* React Dropzone Active Styles */
+.dropzone {
+  transition: all 0.2s ease;
+  outline: 2px dashed transparent;
+  outline-offset: -4px;
+}
+
+.dropzone.drag-active {
+  outline-color: var(--accent-color);
+  background: rgba(88, 166, 255, 0.05); /* Slight tint */
+}
+
+.drop-hint {
+  margin-left: auto; /* Push to right of header */
+  background: var(--accent-color);
+  color: #0d1117;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  animation: pulse 1s infinite alternate;
+}
+
 .markdown-input:focus {
   outline: none;
 }

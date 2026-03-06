@@ -4,7 +4,8 @@ import { markedHighlight } from "marked-highlight";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css'; // Premium dark code theme
 import html2pdf from 'html2pdf.js';
-import { Download, FileText, Code2, Loader2, PenTool, Sun, Moon, Maximize, Minimize } from 'lucide-react';
+import { useDropzone } from 'react-dropzone';
+import { Download, FileText, Code2, Loader2, PenTool, Sun, Moon, Maximize, Minimize, UploadCloud } from 'lucide-react';
 
 // Configure Marked to use Highlight.js
 marked.use(markedHighlight({
@@ -72,6 +73,26 @@ function greetings() {
     // Config marked if needed (e.g. gfm, breaks)
     setParsedHtml(marked.parse(markdown));
   }, [markdown]);
+
+  // File Drop Handler
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file && file.name.endsWith('.md')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setMarkdown(reader.result);
+      };
+      reader.readAsText(file);
+    } else {
+      alert("Please upload a valid .md file");
+    }
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { 'text/markdown': ['.md'] },
+    multiple: false
+  });
 
   const handleDownloadPdf = () => {
     setIsGenerating(true);
@@ -197,18 +218,26 @@ function greetings() {
       )}
 
       <main className={`app-main ${isFocusMode ? 'focus-expanded' : ''}`}>
-        {/* Editor Pane */}
-        <div className="pane glass">
+        {/* Editor Pane (With Dropzone) */}
+        <div {...getRootProps()} className={`pane glass dropzone ${isDragActive ? 'drag-active' : ''}`}>
+          <input {...getInputProps()} />
           <div className="pane-header">
             <PenTool size={16} />
             Editor
+            {isDragActive && (
+              <span className="drop-hint">
+                <UploadCloud size={14} style={{ marginRight: '4px' }}/> 
+                Drop .md file here
+              </span>
+            )}
           </div>
           <textarea
             className="markdown-input"
             value={markdown}
             onChange={(e) => setMarkdown(e.target.value)}
-            placeholder="Start typing your markdown here..."
+            placeholder="Start typing your markdown here, or drag and drop a .md file..."
             spellCheck="false"
+            onClick={(e) => e.stopPropagation()} // Prevent clicking textarea from opening file dialog
           />
         </div>
 
